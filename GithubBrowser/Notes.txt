@@ -1,0 +1,3 @@
+To Run
+	-GO to directory (Onedrive and then GitHubBrowser)
+	- react-native run-ios
