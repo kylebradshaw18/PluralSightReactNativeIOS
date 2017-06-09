@@ -9,7 +9,7 @@ import {
   TouchableHighlight,
   ActivityIndicator
 } from 'react-native';
-import AuthService from './AuthService';
+import AuthService from './Services/AuthService';
 
 export default class Login extends Component {
 	constructor(props){
@@ -20,12 +20,12 @@ export default class Login extends Component {
 	}
   render() {
 	  var errorCtrl = <View/>;
-	
-	  if(!this.state.sucess && this.state.badCredentials){
+
+	  if((!this.state.sucess) && this.state.badCredentials){
 		  errorCtrl = <Text style={styles.error}>
 		  That username and password didn't work
 		  </Text>;
-	  } else if(!this.state.sucess && this.state.unknownError){
+	  } else if((!this.state.sucess) && this.state.unknownError){
 		  errorCtrl = <Text style={styles.error}>
 		  We experienced an unexpected issue
 		  </Text>;
@@ -44,16 +44,25 @@ export default class Login extends Component {
 			onChangeText={(text) => this.setState({username: text})}
 			style={styles.input}
 			placeholder="Github Username"
+			ref='usernameInput'
+			autoCapitalize = 'none'
+			onSubmitEditing={(event) => { 
+				this.refs.passwordInput.focus(); 
+			}}
 		/>
 		<TextInput 
 			onChangeText={(text) => this.setState({password: text})}
 			style={styles.input}
 			placeholder="Github Password"
-			sourceTextEntry="true"
+			secureTextEntry={true}
+			ref='passwordInput'
+			autoCapitalize = 'none'
 		/>
 		<TouchableHighlight
 			onPress={this.onLoginPressed.bind(this)}
-			style={styles.button}>
+			style={styles.button}
+			ref='logInInput'
+			>
 			<Text 
 				style={styles.buttonText}>
 					Log in
@@ -69,16 +78,23 @@ export default class Login extends Component {
     );
   }
 
-  onLoginPressed(){
-	  this.setState({showProgress: true});
+	onLoginPressed(){
+		this.setState({showProgress: true});
+		
+		AuthService.login({
+				username: this.state.username,
+				password: this.state.password
+			},(results)=> {
+				this.setState(Object.assign({
+				showProgress: false
+			}, results));
 
-	  AuthService.login({
-		  username: this.state.username,
-		  password: this.state.password
-	  }, (results) => {
-		  this.setState(results);
-	  });
-  }
+			if(results.success && this.props.onLogin){
+				this.props.onLogin();
+			}
+		});
+	}
+	
 }
 
 const styles = StyleSheet.create({
@@ -104,7 +120,7 @@ const styles = StyleSheet.create({
 	  fontSize: 18,
 	  borderWidth: 1,
 	  borderColor: '#48bbec',
-	  borderRadius: 0,
+	  borderRadius: 4,
 	  color: '#48BBEC'
   },
   button:{
@@ -112,7 +128,8 @@ const styles = StyleSheet.create({
 	  backgroundColor: '#48BBEC',
 	  alignSelf: 'stretch',
 	  marginTop: 10,
-	  justifyContent: 'center'
+	  justifyContent: 'center',
+	  borderRadius:4
   },
   buttonText:{
 	  fontSize:22,
