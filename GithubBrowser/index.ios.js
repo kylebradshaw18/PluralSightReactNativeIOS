@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Login from './Login';
 import AuthService from './Services/AuthService';
+import AppContainer from './AppContainer';
 
 export default class GithubBrowser extends Component {
 	constructor(props, context) {
@@ -36,30 +37,22 @@ export default class GithubBrowser extends Component {
 
   render() {
 
-	if(this.state.checkingAuth){
-		return (
-			<View style={styles.container}>
-				<ActivityIndicator
-					animating={this.state.showProgress}
-					size="large"
-					style={styles.loader}
-				/>
-				<Text style={styles.welcome}> Logged in</Text>
-			</View>
-		);
-	}
-	
-	if(this.state.isLoggedIn){
-		return (
-			<View style={styles.container}>
-				<Text style={styles.welcome}> Logged in</Text>
-			</View>
-		);
-	} else {
-		return (
-			<Login onLogin={this.onLogin()}/>
-		);
-	}
+		if(this.state.checkingAuth){
+			return (
+				<View style={styles.container}>
+				</View>
+			);
+		}
+		
+		if(this.state.isLoggedIn){
+			return (
+				<AppContainer/>
+			);
+		} else {
+			return (
+				<Login onLogin={this.onLogin()}/>
+			);
+		}
   }
 
   onLogin(){
