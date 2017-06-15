@@ -11,6 +11,7 @@ import {
   TabBarIOS
 } from 'react-native';
 import AuthService from './Services/AuthService';
+import Feed from './Feed';
 
 export default class AppContainer extends Component {
 	constructor(props){
@@ -29,7 +30,7 @@ export default class AppContainer extends Component {
 				icon={{uri: 'inbox'}}
 				onPress={()=> this.setState({selectedTab: 'feed'})}
 			>
-				<Text style={styles.welcome}> Tab 1</Text>
+				<Feed />
 			</TabBarIOS.Item>
 			<TabBarIOS.Item
 				title="Search"
