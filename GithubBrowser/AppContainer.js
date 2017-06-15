@@ -25,11 +25,20 @@ export default class AppContainer extends Component {
 			<TabBarIOS.Item
 				title="Feed"
 				selected={this.state.selectedTab == 'feed'}
-				icon={require('inbox')}
+				style={styles.icon}
+				icon={{uri: 'inbox'}}
 				onPress={()=> this.setState({selectedTab: 'feed'})}
 			>
+				<Text style={styles.welcome}> Tab 1</Text>
 			</TabBarIOS.Item>
-			<Text style={styles.welcome}> Tab 1</Text>
+			<TabBarIOS.Item
+				title="Search"
+				selected={this.state.selectedTab == 'search'}
+				icon={{uri: 'search'}}
+				onPress={()=> this.setState({selectedTab: 'search'})}
+			>
+				<Text style={styles.welcome}> Tab 2</Text>
+			</TabBarIOS.Item>
 		</TabBarIOS>
     );
   }
@@ -47,5 +56,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  icon:{
+	  backgroundColor:'transparent'
   }
 });
