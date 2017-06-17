@@ -8,9 +8,6 @@ const _AuthKey = 'auth';
 const _UserKey = 'user';
 
 export default class AuthService{
-	static test(){
-		console.log('HERE');
-	}
 
 	static getAuthInfo(cb){
 		AsyncStorage.multiGet([_AuthKey, _UserKey], (err, val) => {
